@@ -68,8 +68,8 @@ def compare(data,base):
 #	fout.write("%s " % len(data))
 #	fout.write(" %s " % ll_header+nl_header)
 
-def create_database(base):
-	fout.write('DROP DATABASE IF EXISTS '+base+';\nCREATE DATABASE '+base+';\nUSE '+base+';\n')
+#def create_database(base):
+#	fout.write('DROP DATABASE IF EXISTS BTP2;\nCREATE DATABASE BTP2;\nUSE BTP2;\n')
 
 def create_table(fields,name):
 	fout.write("CREATE TABLE %s(id integer," % name)
@@ -105,8 +105,7 @@ def for_each(base, arw):
         global tables
         global table_count
         tables = []
-        table_count = []
-        create_database(base)        
+        table_count = []       
         for line in arw:
                 fields = line.keys()
                 compare(line, base)
@@ -116,6 +115,7 @@ raw_csma=csma_list_of_dict()
 raw_p2p=p2p_list_of_dict()        
 
 def a2l():
+		fout.write('DROP DATABASE IF EXISTS BTP2;\nCREATE DATABASE BTP2;\nUSE BTP2;\n')
         for_each("WIFI",raw)
         for_each("CSMA",raw_csma)
         for_each("P2P",raw_p2p)
