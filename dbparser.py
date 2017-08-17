@@ -13,7 +13,7 @@ fout = open('init.sql', 'w')
 
 def compare(data,base):
 
-	name = ''
+	name = base
 
         if base=="CSMA":
                 nl_header = data['network_layer_header']
@@ -27,18 +27,18 @@ def compare(data,base):
                         nl_header = ' '
 
                 if ll_header == 'MGT_BEACON' or ll_header == 'MGT_ASSOCIATION_REQUEST' or ll_header == 'MGT_ASSOCIATION_RESPONSE':
-                        name = 'MGT'
+                        name += '_MGT'
 
                 if ll_header == 'CTL_ACK':
-                        name = 'CTL_ACK'
+                        name += '_CTL_ACK'
 
         if (ll_header == 'DATA' and base=="WIFI") or base=="CSMA":
                 if nl_header == ' ns3::ArpHeader ':
-                        name = 'DATA_ArpHeader '
+                        name += '_DATA_ArpHeader '
                 if nl_header == ' ns3::Ipv4Header ':
-                        name = 'DATA_Ipv4Header '
+                        name += '_DATA_Ipv4Header '
         if base=="P2P":
-                name = 'DATA_Ipv4Header '
+                name += '_DATA_Ipv4Header '
                                 
 
 	flag = 0
@@ -115,7 +115,7 @@ raw_csma=csma_list_of_dict()
 raw_p2p=p2p_list_of_dict()        
 
 def a2l():
-		fout.write('DROP DATABASE IF EXISTS BTP2;\nCREATE DATABASE BTP2;\nUSE BTP2;\n')
+	fout.write('DROP DATABASE IF EXISTS BTP2;\nCREATE DATABASE BTP2;\nUSE BTP2;\n')
         for_each("WIFI",raw)
         for_each("CSMA",raw_csma)
         for_each("P2P",raw_p2p)
