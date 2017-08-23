@@ -3,13 +3,8 @@
 import MySQLdb
 
 def create_dic(choice, db ,table_name):
-    #table_name="DATA_Ipv4Header"
     #choice="drop_p" or "send" or "recv"
 
-    username="root"
-    password=raw_input("Enter mysql password: ");
-    # change database P2P
-    db = MySQLdb.connect("localhost",username,password,db )
     cursor = db.cursor()
 
     cursor.execute("SHOW columns FROM "+str(table_name)+";")
@@ -65,13 +60,46 @@ def create_dic(choice, db ,table_name):
                 else:
                     dic[sotodes] = [atom[col_time] ]    
 
-    db.close()
     return dic
 
 def calc_delay():
-    send=create_dic("send", "WIFI" ,'DATA_Ipv4Header')
-    recv=create_dic("recv", "CSMA" ,'DATA_Ipv4Header')
-    drop_p=create_dic("drop_p", "P2P" ,'DATA_Ipv4Header')
+
+    data_base = "BTP2"
+    username="root"
+    #password=raw_input("Enter mysql password: ");
+    password = "13Bottles!26Letters"
+
+    db = MySQLdb.connect("localhost", username, password, data_base )
+
+    
+    send=create_dic("send", db, "WIFI_DATA_Ipv4Header")
+    recv=create_dic("recv", db, "CSMA_DATA_Ipv4Header")
+
+    table_name = ["WIFI_DATA_Ipv4Header", "CSMA_DATA_Ipv4Header", "P2P_DATA_Ipv4Header"]
+    drop_temp = []
+
+    for i in range(len(table_name)):
+        drop_temp.append(create_dic("drop_p", db, table_name[i]))
+
+    db.close()
+
+    drop_p = {}
+    for i in send.keys():
+        for dic in drop_temp:
+            if i in dic:
+                if i not in drop_p:
+                    drop_p[i] = []
+                drop_p[i].extend(dic[i])
+
+        if i in drop_p:
+            drop_p[i] = sorted(drop_p[i])
+    
+
+
+    #print str(send)+"\n\n"+str(recv)+"\n\n"+ str(drop_p)
+    #exit(0)
+
+    
     final=[]
 
     #print len(send['10.1.3.1 > 10.1.2.4']),len(recv['10.1.3.1 > 10.1.2.4']),len(drop_p['10.1.3.1 > 10.1.2.4'])
@@ -107,6 +135,7 @@ def calc_delay():
                 #else:
                 #    del recv[i][0]
                 #print final, len(send), len(recv), len(drop_p)
+                
 
     for i in final:
         print i
@@ -115,4 +144,3 @@ def calc_delay():
     print "Successful packets", sucks
     return final
 
-calc_delay()
