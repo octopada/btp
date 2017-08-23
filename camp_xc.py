@@ -66,8 +66,7 @@ def calc_delay():
 
     data_base = "BTP2"
     username="root"
-    #password=raw_input("Enter mysql password: ");
-    password = "13Bottles!26Letters"
+    password=raw_input("Enter mysql password: ");
 
     db = MySQLdb.connect("localhost", username, password, data_base )
 
