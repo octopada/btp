@@ -62,14 +62,8 @@ def create_dic(choice, db ,table_name):
 
     return dic
 
-def calc_delay():
 
-    data_base = "BTP2"
-    username="root"
-    password=raw_input("Enter mysql password: ");
-
-    db = MySQLdb.connect("localhost", username, password, data_base )
-
+def calc_delay(db):
     
     send=create_dic("send", db, "WIFI_DATA_Ipv4Header")
     recv=create_dic("recv", db, "CSMA_DATA_Ipv4Header")
@@ -92,13 +86,7 @@ def calc_delay():
 
         if i in drop_p:
             drop_p[i] = sorted(drop_p[i])
-    
 
-
-    #print str(send)+"\n\n"+str(recv)+"\n\n"+ str(drop_p)
-    #exit(0)
-
-    
     final=[]
 
     #print len(send['10.1.3.1 > 10.1.2.4']),len(recv['10.1.3.1 > 10.1.2.4']),len(drop_p['10.1.3.1 > 10.1.2.4'])
