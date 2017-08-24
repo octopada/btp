@@ -17,3 +17,8 @@ os.system(command);
 
 command = "mysql -u root -p < init.sql";
 os.system(command);
+
+#username="root"
+#    password=raw_input("Enter mysql password: ");
+#    # change database P2P
+#    db = MySQLdb.connect("localhost",username,password,db )
