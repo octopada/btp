@@ -91,7 +91,7 @@ def calc_delay(db):
 
     #print len(send['10.1.3.1 > 10.1.2.4']),len(recv['10.1.3.1 > 10.1.2.4']),len(drop_p['10.1.3.1 > 10.1.2.4'])
 
-    print "############# Drop = porD ##############\n\n"
+#    print "############# Drop = porD ##############\n\n"
     sucks=0
     pot=0
 
@@ -106,7 +106,7 @@ def calc_delay(db):
             if (i in drop_p.keys()) and float(send[i][0])<= float(d) and float(d) < float(r):
                 
                 fin_time=float(drop_p[i][0]) - float(send[i][0])
-                final.append( [i[:i.find(' >')],i[i.find('>')+2:] , "porD",fin_time])
+                final.append( [float(send[i][0]), i[:i.find(' >')],i[i.find('>')+2:] , "porD",fin_time])
                 del send[i][0]
                 del drop_p[i][0]
                 pot=pot+1
@@ -114,7 +114,7 @@ def calc_delay(db):
             else:
                 if len(recv[i])>0 and float(send[i][0])<=float(recv[i][0]):
                     fin_time=float(recv[i][0])-float(send[i][0])
-                    final.append( [i[:i.find(' >')],i[i.find('>')+2:],"Delay",fin_time])
+                    final.append( [float(send[i][0]), i[:i.find(' >')],i[i.find('>')+2:],"Delay",fin_time])
                     del send[i][0]
                     del recv[i][0]
                     sucks=sucks+1
@@ -124,10 +124,10 @@ def calc_delay(db):
                 #print final, len(send), len(recv), len(drop_p)
                 
 
-    for i in final:
-        print i
+#    for i in final:
+#        print i
 
-    print "\nDropped packets", pot
-    print "Successful packets", sucks
-    return final
+#    print "\nDropped packets", pot
+#    print "Successful packets", sucks
+    return final, pot, sucks
 
