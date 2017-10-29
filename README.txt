@@ -41,3 +41,14 @@ for the final queryable result.
 ** NETANIM **
 
 The netanim.xml file can be opened in Network Animator to visualise the network.
+--------------------------------------------------------------------------------
+NS3 Directory: /home/gogol/Documents/threetwo/btp/ns3/ns-allinone-3.26/ns-3.26
+
+problem: csma each node except one connected to p2p link traces only packets 
+sent/received to/by it. wifi all nodes trace all packets, but times are diff.
+in a general network how to know, in case of wifi, or ethernet p2p link nodes,
+which packets are sent/received to/by it? cannot get address from trace.
+
+solution: create a node-device to ip address list separately and feed it to the trace
+program. |format| <network type>-<node number>-<device number>:<ip address>
+        |example| p2p-0-0:10.1.1.1
