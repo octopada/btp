@@ -80,7 +80,6 @@ def generate_trace_dict_of_list_of_dicts():
     return tracedata
     
 td = generate_trace_dict_of_list_of_dicts()
-print(td)
     
     
     
