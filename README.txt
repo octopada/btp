@@ -52,3 +52,4 @@ which packets are sent/received to/by it? cannot get address from trace.
 solution: create a node-device to ip address list separately and feed it to the trace
 program. |format| <network type>-<node number>-<device number>:<ip address>
         |example| p2p-0-0:10.1.1.1
+put this list in a file called node_addresses.txt. pcap_parser will pick it up.
