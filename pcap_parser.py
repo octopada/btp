@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 def remove_port_number(address):
 #    print('working with address: ' + address)
@@ -43,24 +42,25 @@ def generate_trace_dict_of_list_of_dicts():
         node_addresses[l[0]+'.pcap'] = l[1]
 
     for pcap in pcaps:
-        command = 'tcpdump -nn -tt -r ' + pcap + '| grep \'IP\' | grep \'seq\''
-        output = subprocess.getoutput(command)
+        command = "tcpdump -nn -tt -r " + pcap + " | grep \'IP\' | grep \'seq\'"
+        output = os.popen(command).read()
         tracelist = output.split('\n')
+        tracelist = tracelist[:-1]
         
         trace_list_of_dicts = []
         
-        skip = True # for first line which is not a record
+#        skip = True # for first line which is not a record
         for trace in tracelist:
-            if skip:
-                skip = False
-                continue
-                
+#            if skip:
+#                skip = False
+#                continue
+
             trace_dict = {}
             colon_split = trace.split(':')
             space_split = colon_split[0].split()
             comma_split = trace.split(',')
             
-    #        print('sending address: ' + space_split[2])
+        #        print('sending address: ' + space_split[2])
             source = remove_port_number(space_split[2])
             destination = remove_port_number(space_split[4])
             seq_no = comma_split[1].split()[1]
@@ -79,7 +79,8 @@ def generate_trace_dict_of_list_of_dicts():
         
     return tracedata
     
-    
+td = generate_trace_dict_of_list_of_dicts()
+print(td)
     
     
     
