@@ -49,7 +49,7 @@ def create_newdic(dic):
                 
 
 #return format is going to be a list of below
-#init_time, source, destination, ("Drop" or "Delay") ,difference_time
+#init_time, source, destination, ("Drop" or "Delay") ,difference_time, sequence number
 def calc_delay():
 
     dic = cap.generate_trace_dict_of_list_of_dicts()
