@@ -51,9 +51,7 @@ def create_newdic(dic):
 #return format is going to be a list of below
 #init_time, source, destination, ("Drop" or "Delay") ,difference_time, sequence number
 def calc_delay():
-
     dic = cap.generate_trace_dict_of_list_of_dicts()
-
     send = {}
     guide_send = {}
     recv = {}
@@ -111,9 +109,7 @@ def calc_delay():
     #for key in send:
     #print "S ",send[key],"\nR ",recv[key],"\n\n\n"
     
-    for i in final:
-        print i
+#    for i in final:
+#        print i
         
-    return final
-
-calc_delay()
+    return final, dic

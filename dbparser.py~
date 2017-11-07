@@ -2,8 +2,7 @@ from delay_drop import calc_delay
 from pcap_parser import generate_trace_dict_of_list_of_dicts
 
 fout = open('init_new.sql', 'w')
-raw  = calc_delay()
-raw2 = generate_trace_dict_of_list_of_dicts()
+raw, raw2 = calc_delay()
 count = 0
 
 def populate_table(i,line):
