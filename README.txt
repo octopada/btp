@@ -1,7 +1,6 @@
 
 Aim: To learn network simulation, and create a way to interpret the trace files
-produced in an efficient way to ease the study of existing network (such as pinpointing
-the locations of problems/drops produced if any)
+produced in an efficient way to ease the study of existing network
 
 Network.cc is used to create the network we are working with in ns3.
 This network consists of CSMA and WiFi networks connected by a point-to-point link.
