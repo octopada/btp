@@ -18,15 +18,18 @@ def generate_trace_dict_of_list_of_dicts():
     pcaps = []
 
     for filename in files:
-        if 'p2p' in filename:
-            pcaps.append(filename);
-    #        p2p_pcaps.append(filename);
-        if 'csma' in filename:
-            pcaps.append(filename);
-    #        csma_pcaps.append(filename);
-        if 'wifi' in filename:
-            pcaps.append(filename);
-    #        wifi_pcaps.append(filename);
+        if '.pcap' in filename:
+            pcaps.append(filename)
+            
+#        if 'p2p' in filename:
+#            pcaps.append(filename);
+#    #        p2p_pcaps.append(filename);
+#        if 'csma' in filename:
+#            pcaps.append(filename);
+#    #        csma_pcaps.append(filename);
+#        if 'wifi' in filename:
+#            pcaps.append(filename);
+#    #        wifi_pcaps.append(filename);
             
     #print(p2p_pcaps)
     #print(csma_pcaps)
@@ -65,6 +68,10 @@ def generate_trace_dict_of_list_of_dicts():
             destination = remove_port_number(space_split[4])
             seq_no = comma_split[1].split()[1]
             
+            for entry in comma_split:
+                if 'length' in entry:
+                    length = entry.split()[1]
+            
             if seq_no == '0':
                 continue
             
@@ -72,13 +79,12 @@ def generate_trace_dict_of_list_of_dicts():
             trace_dict['source'] = source
             trace_dict['destination'] = destination
             trace_dict['sequence-no'] = seq_no
+            trace_dict['length'] = length
 
             trace_list_of_dicts.append(trace_dict)
             
         tracedata[node_addresses[pcap]] = trace_list_of_dicts
         
-    return tracedata
-    
-    
+    return tracedata   
     
     
