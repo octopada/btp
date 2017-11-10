@@ -88,6 +88,23 @@ def plot_multi_e2e(data):
 
     plot(arr1)
 
+
+def plot_cumulative_drop(data):
+    
+    arr1 = [[], [], "time", "cumulative_drop"]
+    count_drop = 0
+    for i in data:
+        if i[-4] == "Delay":
+            diff = i[-3]
+            arr1[0].append(i[0]+diff)
+            arr1[1].append(count_drop)
+
+        else:
+            count_drop += 1
+            arr1[0].append(i[0])
+            arr1[1].append(count_drop)
+
+    plot(arr1)
     
 def plot_all(data):
 
@@ -100,6 +117,7 @@ def plot_all(data):
     total_time_sent = 0
     
     avg_end_to_end = 0
+    avg_jitter = 0
     
     jitter = 0
     temp_jitter_diff = -1
@@ -123,19 +141,20 @@ def plot_all(data):
             avg_end_to_end += diff
                                 
             if temp_jitter_diff != -1:
-                jitter += abs(diff - temp_jitter_diff)
+                jitter = diff - temp_jitter_diff
+                avg_jitter += jitter
                 arr1[0].append(i[0]+diff)
-                arr1[1].append(jitter/count_success)
+                arr1[1].append(jitter)
                                 
             temp_jitter_diff = diff
 
 
     avg_end_to_end /= count_success
-    jitter /= count_success
+    avg_jitter /= count_success
     thruput/=(last_time - first_time)
     
     print "\navg_end_to_end =", avg_end_to_end
-    print "jitter =", jitter
+    print "avg_jitter =", jitter
     print "throughput =", thruput,"\n"
     plot(arr1)
 
@@ -205,6 +224,7 @@ def calc_delay():
     #plot_multi_e2e(final)
     #plot_multi_throughput(final)
     #plot_all(final)
+    #plot_cumulative_drop(final)
     return final, dic
 
 
