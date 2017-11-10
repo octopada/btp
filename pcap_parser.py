@@ -9,7 +9,8 @@ def remove_port_number(address):
     return modified_address
 
 def generate_trace_dict_of_list_of_dicts():
-    files = os.listdir(os.getcwd())
+
+    files = os.listdir(os.getcwd() + '/traces')
 
     #p2p_pcaps = []
     #csma_pcaps = []
@@ -86,5 +87,3 @@ def generate_trace_dict_of_list_of_dicts():
         tracedata[node_addresses[pcap]] = trace_list_of_dicts
         
     return tracedata   
-    
-    

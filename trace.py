@@ -8,7 +8,7 @@ import os
 #from camp_xc import calc_delay
 
 print("Cleaning files...")
-command = "rm init.sql; rm *.xml; rm *.pcap"
+command = "rm init.sql; rm -r *.xml; rm -r *.pcap"
 os.system(command);
 
 ns3_dir = input("Enter NS-3 directory-> ");
@@ -21,9 +21,9 @@ os.system(command);
 #os.system("ls");
 
 print("Getting pcap traces and animation...")
-command = "mv " + str(ns3_dir) + "/*.pcap .";
+command = "mv " + str(ns3_dir) + "/*.pcap ./traces";
 os.system(command);
-command = "mv " + str(ns3_dir) + "/*.xml .";
+command = "mv " + str(ns3_dir) + "/*.xml ./traces";
 os.system(command);
 
 #print "Parsing pcap traces into database..."
