@@ -8,6 +8,8 @@ def create_newdic(dic):
     guide_recv = {}
     stemp = {}
     rtemp = {}
+    first_sent_time = 10000000000000
+    last_recv_time = -1
 
     for i in dic.keys():
 
@@ -29,6 +31,8 @@ def create_newdic(dic):
 
 
             if i == item["source"]:
+                if float(item["timestamp"]) < first_sent_time:
+                    first_sent_time = float(item["timestamp"])
                 send[sotod].append({"timestamp":float(item["timestamp"]), "seq_no":item["sequence-no"]})
                 stemp[sotod]+=1
                 if item["sequence-no"] not in guide_send[sotod]:
@@ -37,6 +41,8 @@ def create_newdic(dic):
                 guide_send[sotod][item["sequence-no"]].append(stemp[sotod])
 
             elif i == item["destination"]:
+                if float(item["timestamp"]) > last_recv_time:
+                    last_recv_time = float(item["timestamp"])
                 recv[sotod].append({"timestamp":float(item["timestamp"]), "seq_no":item["sequence-no"]})
                 rtemp[sotod]+=1
                 if item["sequence-no"] not in guide_recv[sotod]:
@@ -46,7 +52,7 @@ def create_newdic(dic):
 
     # need to sort the drop data as per time stamp
     
-    return (send, recv, guide_send, guide_recv)
+    return (send, recv, guide_send, guide_recv, first_sent_time, last_recv_time)
 
 
 def plot(ls):
@@ -67,12 +73,15 @@ def plot(ls):
 #init_time, source, destination, ("Drop" or "Delay") ,difference_time, sequence number
 def calc_delay():
     dic = cap.generate_trace_dict_of_list_of_dicts()
+    
     send = {}
     guide_send = {}
     recv = {}
     guide_recv = {}
+    first_sent_time = 10000000000000
+    last_recv_time = -1
     
-    (send, recv, guide_send, guide_recv) = create_newdic(dic)
+    (send, recv, guide_send, guide_recv, first_sent_time, last_recv_time) = create_newdic(dic)
 
     len_of_packet = 20
     thruput = 0
@@ -146,6 +155,7 @@ def calc_delay():
 
     avg_end_to_end /= count_success
     jitter /= count_success
+    thruput/=(last_recv_time - first_sent_time)
 
     #for key in send:
     #print "S ",send[key],"\nR ",recv[key],"\n\n\n"
@@ -153,8 +163,8 @@ def calc_delay():
     #for i in final:
         #print i
 
-    #plot(arr1)
+    plot(arr1)
     return final, dic
 
 
-#calc_delay()
+calc_delay()
