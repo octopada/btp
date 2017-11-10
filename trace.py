@@ -1,40 +1,39 @@
 # main
 import os
 
-# /home/roshan/Downloads/ns-allinone-3.26/ns-3.26
+# /home/gogol/Documents/threetwo/btp/ns3/ns-allinone-3.26/ns-3.26
 
 #import MySQLdb
 
 #from camp_xc import calc_delay
 
+print("Cleaning files...")
+command = "rm init.sql; rm *.xml; rm *.pcap"
+os.system(command);
 
-#print "Cleaning files..."
-#command = "rm init.sql; rm *.xml; rm *.pcap"
-#os.system(command);
+ns3_dir = input("Enter NS-3 directory-> ");
+sim_file = input("Enter simulator filename (without extension)-> ");
 
-#ns3_dir = raw_input("Enter NS-3 directory-> ");
-#sim_file = raw_input("Enter simulator filename (without extension)-> ");
-
-#print "Running simulation..."
-#command = "cd " + str(ns3_dir) + "; ./waf --run scratch/" + str(sim_file)
-#os.system(command);
+print("Running simulation...")
+command = "cd " + str(ns3_dir) + "; ./waf --run scratch/" + str(sim_file)
+os.system(command);
 
 #os.system("ls");
 
-#print "Getting pcap traces and animation..."
-#command = "mv " + str(ns3_dir) + "/*.pcap .";
-#os.system(command);
-#command = "mv " + str(ns3_dir) + "/*.xml .";
-#os.system(command);
-
-print "Parsing pcap traces into database..."
-command = "python dbparser.py"
-os.system(command)
-
-password = raw_input("Enter mysql password: ");
-print "Creating tables..."
-command = "mysql -u root -p'" + password + "' < init.sql";
+print("Getting pcap traces and animation...")
+command = "mv " + str(ns3_dir) + "/*.pcap .";
 os.system(command);
+command = "mv " + str(ns3_dir) + "/*.xml .";
+os.system(command);
+
+#print "Parsing pcap traces into database..."
+#command = "python dbparser.py"
+#os.system(command)
+
+#password = raw_input("Enter mysql password: ");
+#print "Creating tables..."
+#command = "mysql -u root -p'" + password + "' < init.sql";
+#os.system(command);
 
 #print "Connecting to database..."
 #username = "root"
