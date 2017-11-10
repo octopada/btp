@@ -1,4 +1,5 @@
 import pcap_parser as cap
+import matplotlib.pyplot as plt
 
 def create_newdic(dic):
     send = {}
@@ -46,7 +47,21 @@ def create_newdic(dic):
     # need to sort the drop data as per time stamp
     
     return (send, recv, guide_send, guide_recv)
-                
+
+
+def plot(ls):
+
+    # linear
+    plt.subplot(111)
+    plt.plot(ls[0], ls[1])
+    plt.xscale('linear')
+    plt.yscale('linear')
+    plt.xlabel(ls[2])
+    plt.ylabel(ls[3])
+    plt.title('title_here')
+    plt.grid(True)
+    plt.show()
+
 
 #return format is going to be a list of below
 #init_time, source, destination, ("Drop" or "Delay") ,difference_time, sequence number
@@ -58,7 +73,18 @@ def calc_delay():
     guide_recv = {}
     
     (send, recv, guide_send, guide_recv) = create_newdic(dic)
+
+    len_of_packet = 20
+    thruput = 0
+    count_success = 0
+    total_time_sent = 0
     
+    avg_end_to_end = 0
+    
+    jitter = 0
+    temp_jitter_diff = -1
+    #[[xValues], [yVales], "xName", "yName"]
+    arr1 = [[], [], "no. of packets", "Jitter"]
 
     final = []
     record = ""
@@ -94,6 +120,18 @@ def calc_delay():
                             diff = recv[i][guide_recv[i][key][r_it]]["timestamp"] - send[i][guide_send[i][key][s_it]]["timestamp"]
                             record  = [ send[i][guide_send[i][key][s_it]]["timestamp"], i[:i.find(' >')], i[i.find('>')+2:], "Delay", diff, key]
                             final.append(record)
+                            
+                            count_success += 1
+                            thruput += len_of_packet*8
+                            avg_end_to_end += diff
+                            
+                            if temp_jitter_diff != -1:
+                                jitter += abs(diff - temp_jitter_diff)
+                                arr1[0].append(count_success)
+                                arr1[1].append(jitter)
+                                
+                            temp_jitter_diff = diff
+                            
                             s_it += 1
                             r_it += 1
 
@@ -106,10 +144,17 @@ def calc_delay():
                 
     final = sorted(final)
 
+    avg_end_to_end /= count_success
+    jitter /= count_success
+
     #for key in send:
     #print "S ",send[key],"\nR ",recv[key],"\n\n\n"
     
-#    for i in final:
-#        print i
-        
+    #for i in final:
+        #print i
+
+    #plot(arr1)
     return final, dic
+
+
+#calc_delay()
