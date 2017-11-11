@@ -5,6 +5,7 @@ import delay_drop
 from dbparser import enter_data
 
 # /home/gogol/Documents/threetwo/btp/ns3/ns-allinone-3.26/ns-3.26
+# /home/gogol/Documents/threetwo/btp/ns3/ns-allinone-3.26/netanim-3.107
 
 #import MySQLdb
 
@@ -39,12 +40,31 @@ print("Creating tables...")
 command = "mysql -u root -p'" + password + "' < init.sql";
 os.system(command);
 
-delay_drop.plot_multi_e2e(raw, [])
-delay_drop.plot_transfer_rate(raw, [])
-delay_drop.plot_jitter(raw, [])
-delay_drop.plot_cumulative_drop(raw, [])
-delay_drop.get_stats(raw)
+while True:
+    print("\nMenu:\n1. Show all packets\n2. Show stats\n3. Graphs\n4. Netanim\n5. Quit")
+    choice = input("Enter choice-> ");
     
+    if choice == '1':
+        for entry in raw:
+            print(entry)
+    elif choice == '2':
+        delay_drop.get_stats(raw)
+    elif choice == '3':
+        print("graph menu")
+    elif choice == '4':
+        netanim_dir = input("Enter NetAnim directory -> ");
+        command = netanim_dir + "/NetAnim";
+        os.system(command);
+    elif choice == '5':
+        break
+    else:
+        pass
+
+#    delay_drop.plot_multi_e2e(raw, [])
+#    delay_drop.plot_transfer_rate(raw, [])
+#    delay_drop.plot_jitter(raw, [])
+#    delay_drop.plot_cumulative_drop(raw, [])
+#    delay_drop.get_stats(raw)
 
 #print "Connecting to database..."
 #username = "root"
