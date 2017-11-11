@@ -1,6 +1,9 @@
 # main
 import os
 
+import delay_drop
+from dbparser import enter_data
+
 # /home/gogol/Documents/threetwo/btp/ns3/ns-allinone-3.26/ns-3.26
 
 #import MySQLdb
@@ -26,14 +29,21 @@ os.system(command);
 command = "mv " + str(ns3_dir) + "/*.xml ./traces";
 os.system(command);
 
-#print "Parsing pcap traces into database..."
+print("Parsing pcap traces into database...")
+raw, raw2 = enter_data()
 #command = "python dbparser.py"
 #os.system(command)
 
-#password = raw_input("Enter mysql password: ");
-#print "Creating tables..."
-#command = "mysql -u root -p'" + password + "' < init.sql";
-#os.system(command);
+password = input("Enter mysql password: ");
+print("Creating tables...")
+command = "mysql -u root -p'" + password + "' < init.sql";
+os.system(command);
+
+delay_drop.plot_multi_e2e(raw)
+delay_drop.plot_multi_throughput(raw)
+delay_drop.plot_all(raw)
+delay_drop.plot_cumulative_drop(raw)
+    
 
 #print "Connecting to database..."
 #username = "root"

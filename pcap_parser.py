@@ -46,7 +46,7 @@ def generate_trace_dict_of_list_of_dicts():
         node_addresses[l[0]+'.pcap'] = l[1]
 
     for pcap in pcaps:
-        command = "tcpdump -nn -tt -r " + pcap + " | grep \'IP\' | grep \'seq\'"
+        command = "tcpdump -nn -tt -r traces/" + pcap + " | grep \'IP\' | grep \'seq\'"
         output = os.popen(command).read()
         tracelist = output.split('\n')
         tracelist = tracelist[:-1]
@@ -86,4 +86,4 @@ def generate_trace_dict_of_list_of_dicts():
             
         tracedata[node_addresses[pcap]] = trace_list_of_dicts
         
-    return tracedata   
+    return tracedata

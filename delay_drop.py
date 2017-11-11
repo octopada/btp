@@ -153,9 +153,9 @@ def plot_all(data):
     avg_jitter /= count_success
     thruput/=(last_time - first_time)
     
-    print "\navg_end_to_end =", avg_end_to_end
-    print "avg_jitter =", jitter
-    print "throughput =", thruput,"\n"
+    print("\navg_end_to_end =", avg_end_to_end)
+    print("avg_jitter =", jitter)
+    print("throughput =", thruput,"\n")
     plot(arr1)
 
 
