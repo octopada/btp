@@ -285,8 +285,8 @@ def calc_delay():
                 
     final = sorted(final)
    
-    for i in final:
-        print i
+    #for i in final:
+        #print i
 
     #can call below plot functions with [] as parameter 2 if want a general answer
     #plot_multi_e2e(final,["10.1.3.1","10.1.2.4"])   
