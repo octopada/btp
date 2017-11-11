@@ -41,21 +41,62 @@ command = "mysql -u root -p'" + password + "' < init.sql";
 os.system(command);
 
 while True:
-    print("\nMenu:\n1. Show all packets\n2. Show stats\n3. Graphs\n4. Netanim\n5. Quit")
+    print("\nMenu:\n1. Show stats\n2. Graphs\n3. Netanim\n4. Quit")
     choice = input("Enter choice-> ");
     
     if choice == '1':
-        for entry in raw:
-            print(entry)
-    elif choice == '2':
         delay_drop.get_stats(raw)
+    elif choice == '2':
+        print("\nGraph Menu:\n1. General graphs\n2. Specific src-dest pairs\n3. Back")
+        choice = input("Enter choice-> ");
+            
+        if choice == '1':
+            print("\nGeneral Graphs:\n1. end-to-end delay\n2. transfer rate\n3. jitter\n4. dropped packets\n5. Back")
+            choice = input("Enter choice-> ");
+            
+            if choice == '1':
+                delay_drop.plot_multi_e2e(raw, [])
+                continue
+            elif choice == '2':
+                delay_drop.plot_transfer_rate(raw, [])
+                continue
+            elif choice == '3':
+                delay_drop.plot_jitter(raw, [])
+                continue
+            elif choice == '4':
+                delay_drop.plot_cumulative_drop(raw, [])
+                continue
+            else:
+                pass
+        elif choice == '2':
+            src = input("Enter source IP-> ");
+            dest = input("Enter destination IP-> ");
+            print("\nSpecific Graphs:\n1. end-to-end delay\n2. transfer rate\n3. jitter\n4. dropped packets\n5. Back")
+            choice = input("Enter choice-> ");
+            
+            if choice == '1':
+                delay_drop.plot_multi_e2e(raw, [src, dest])
+                continue
+            elif choice == '2':
+                delay_drop.plot_transfer_rate(raw, [src, dest])
+                continue
+            elif choice == '3':
+                delay_drop.plot_jitter(raw, [src, dest])
+                continue
+            elif choice == '4':
+                delay_drop.plot_cumulative_drop(raw, [src, dest])
+                continue
+            else:
+                pass
+        elif choice == '3':
+            continue
+        else:
+            pass
     elif choice == '3':
-        print("graph menu")
-    elif choice == '4':
         netanim_dir = input("Enter NetAnim directory -> ");
         command = netanim_dir + "/NetAnim";
         os.system(command);
-    elif choice == '5':
+    elif choice == '4':
         break
     else:
         pass
