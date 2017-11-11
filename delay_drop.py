@@ -51,47 +51,51 @@ def create_newdic(dic):
     return (send, recv, guide_send, guide_recv)
 
 
-def plot(ls):
+def plot(ls, title):
     plt.subplot(111)
     plt.plot(ls[0], ls[1])
     plt.xscale('linear')
     plt.yscale('linear')
     plt.xlabel(ls[2])
     plt.ylabel(ls[3])
-    plt.title('title_here')
+    plt.title(title)
     plt.grid(True)
     plt.show()
 
-def plot_multi_throughput(data):
+def plot_transfer_rate(data):
+    title = "packet_transfer_rate vs time"
     len_of_packet = -1
-    arr1 = [[], [], "time", "throughput"]
+    arr1 = [[], [], "time", "packet_transfer_rate"]
     for i in data:
         if i[-4] == "Delay":
             diff = i[-3]
             len_of_packet = i[-1]
             thruput = float(len_of_packet)*8
             thruput /= diff
+
             arr1[0].append(i[0]+diff)
             arr1[1].append(thruput)
 
-    plot(arr1)
+    plot(arr1, title)
 
 
 def plot_multi_e2e(data):
 
-    arr1 = [[], [], "time", "end_to_end delay"]
+    title = "end_to_end delay vs time"
+    arr1 = [[], [], "time(in s)", "end_to_end delay(in s)"]
     for i in data:
         if i[-4] == "Delay":
             diff = i[-3]
             arr1[0].append(i[0]+diff)
             arr1[1].append(diff)
 
-    plot(arr1)
+    plot(arr1, title)
 
 
 def plot_cumulative_drop(data):
+    title = "cumulative drop vs time"
     
-    arr1 = [[], [], "time", "cumulative_drop"]
+    arr1 = [[], [], "time(in s)", "cumulative_drop(no. of packets)"]
     count_drop = 0
     for i in data:
         if i[-4] == "Delay":
@@ -104,9 +108,28 @@ def plot_cumulative_drop(data):
             arr1[0].append(i[0])
             arr1[1].append(count_drop)
 
-    plot(arr1)
+    plot(arr1, title)
+
+def plot_jitter(data):
+    title = "jitter vs time"
     
-def plot_all(data):
+    jitter = 0
+    temp_jitter_diff = -1
+    #[[xValues], [yVales], "xName", "yName"]
+    arr1 = [[], [], "time(in s)", "Jitter(in s)"]
+    for i in data:
+        if i[-4] == "Delay":
+            diff = i[-3]
+            if temp_jitter_diff != -1:
+                jitter = diff - temp_jitter_diff
+                arr1[0].append(i[0]+diff)
+                arr1[1].append(jitter)
+                                
+            temp_jitter_diff = diff
+
+    plot(arr1, title)
+    
+def get_stats(data):
 
     first_time = 10000000000000
     last_time = -1
@@ -119,32 +142,26 @@ def plot_all(data):
     avg_end_to_end = 0
     avg_jitter = 0
     
-    jitter = 0
     temp_jitter_diff = -1
-    #[[xValues], [yVales], "xName", "yName"]
-    arr1 = [[], [], "time", "Jitter"]
     
     for i in data:
         if i[0] < first_time:
-            first_time = i[0]
+            first_time = float(i[0])
 
         if i[-4] == "Delay" and i[-3] + i[0] > last_time:
-            last_time = i[-3] + i[0]
+            last_time = float(i[-3] + i[0])
         if i[-4] == "Drop" and i[0] > last_time:
-            last_time = i[0]
+            last_time = float(i[0])
 
         if i[-4] == "Delay":
             diff = i[-3]
             len_of_packet = i[-1]
             count_success += 1
-            thruput += float(len_of_packet)*8
+            thruput = thruput + float(len_of_packet)*8
             avg_end_to_end += diff
                                 
             if temp_jitter_diff != -1:
-                jitter = diff - temp_jitter_diff
-                avg_jitter += jitter
-                arr1[0].append(i[0]+diff)
-                arr1[1].append(jitter)
+                avg_jitter += abs(diff - temp_jitter_diff)
                                 
             temp_jitter_diff = diff
 
@@ -153,10 +170,12 @@ def plot_all(data):
     avg_jitter /= count_success
     thruput/=(last_time - first_time)
     
-    print("\navg_end_to_end =", avg_end_to_end)
-    print("avg_jitter =", jitter)
-    print("throughput =", thruput,"\n")
-    plot(arr1)
+    print "\navg_end_to_end =", avg_end_to_end
+    print "avg_jitter =", avg_jitter
+    print "throughput =", thruput
+    print "no. of successful packets =",count_success
+    print "no. of drops =",len(data) - count_success,"\n"
+    
 
 
 #return format is going to be a list of below
@@ -221,10 +240,11 @@ def calc_delay():
     #for i in final:
         #print i
 
-    #plot_multi_e2e(final)
-    #plot_multi_throughput(final)
-    #plot_all(final)
+    #plot_multi_e2e(final)   
+    #plot_transfer_rate(final)    
+    #plot_jitter(final)
     #plot_cumulative_drop(final)
+    #get_stats(final)
     return final, dic
 
 
