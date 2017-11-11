@@ -63,9 +63,9 @@ def plot(ls, title):
     plt.show()
 
 def plot_transfer_rate(data, ip_choices):
-    title = "packet_transfer_rate vs time"
+    title = "packet-transfer-rate vs time"
     len_of_packet = -1
-    arr1 = [[], [], "time", "packet_transfer_rate"]
+    arr1 = [[], [], "time (in s)", "packet-transfer-rate (in bits/s)"]
     if len(ip_choices) == 0:
         for i in data:
             if i[-4] == "Delay":
@@ -93,8 +93,8 @@ def plot_transfer_rate(data, ip_choices):
 
 def plot_multi_e2e(data, ip_choices):
 
-    title = "end_to_end delay vs time"
-    arr1 = [[], [], "time(in s)", "end_to_end delay(in s)"]
+    title = "end-to-end delay vs time (per packet)"
+    arr1 = [[], [], "time (in s)", "end-to-end delay (in s)"]
     if len(ip_choices) == 0:
         for i in data:
             if i[-4] == "Delay":
@@ -116,7 +116,7 @@ def plot_multi_e2e(data, ip_choices):
 def plot_cumulative_drop(data, ip_choices):
     title = "cumulative drop vs time"
     
-    arr1 = [[], [], "time(in s)", "cumulative_drop(no. of packets)"]
+    arr1 = [[], [], "time (in s)", "no of packets dropped"]
     count_drop = 0
     if len(ip_choices) == 0:
         for i in data:
@@ -150,7 +150,7 @@ def plot_jitter(data, ip_choices):
     jitter = 0
     temp_jitter_diff = -1
     #[[xValues], [yVales], "xName", "yName"]
-    arr1 = [[], [], "time(in s)", "Jitter(in s)"]
+    arr1 = [[], [], "time (in s)", "jitter (in s)"]
 
     if len(ip_choices) ==0:
         for i in data:
@@ -218,11 +218,11 @@ def get_stats(data):
     avg_jitter /= count_success
     thruput/=(last_time - first_time)
     
-    print "\navg_end_to_end =", avg_end_to_end
-    print "avg_jitter =", avg_jitter
-    print "throughput =", thruput
-    print "no. of successful packets =",count_success
-    print "no. of drops =",len(data) - count_success,"\n"
+    print("\navg-end-to-end delay =", avg_end_to_end)
+    print("avg-jitter =", avg_jitter)
+    print("throughput =", thruput)
+    print("no. of successful packets =",count_success)
+    print("no. of dropped packets =",len(data) - count_success,"\n")
     
 
 

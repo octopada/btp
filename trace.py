@@ -39,10 +39,11 @@ print("Creating tables...")
 command = "mysql -u root -p'" + password + "' < init.sql";
 os.system(command);
 
-delay_drop.plot_multi_e2e(raw)
-delay_drop.plot_multi_throughput(raw)
-delay_drop.plot_all(raw)
-delay_drop.plot_cumulative_drop(raw)
+delay_drop.plot_multi_e2e(raw, [])
+delay_drop.plot_transfer_rate(raw, [])
+delay_drop.plot_jitter(raw, [])
+delay_drop.plot_cumulative_drop(raw, [])
+delay_drop.get_stats(raw)
     
 
 #print "Connecting to database..."
