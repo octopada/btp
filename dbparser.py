@@ -45,5 +45,5 @@ def enter_data():
 	fout.close()
 	return raw, raw2
 
-enter_data()
+#enter_data()
 
